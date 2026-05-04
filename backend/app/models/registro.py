@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import Date, Float, ForeignKey, Integer
+from sqlalchemy import Boolean, Date, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -15,6 +15,9 @@ class Registro(Base):
     horas_sueno: Mapped[float] = mapped_column(Float, nullable=False)
     tareas: Mapped[int] = mapped_column(Integer, nullable=False)
     nota: Mapped[float] = mapped_column(Float, nullable=False)
+    porcentaje: Mapped[float] = mapped_column(Float, nullable=False, default=0)
+    actividad: Mapped[str] = mapped_column(String(120), nullable=False, default="Nota")
+    es_futura: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     productividad: Mapped[float] = mapped_column(Float, nullable=False)
     fecha: Mapped[date] = mapped_column(Date, nullable=False, index=True)
 

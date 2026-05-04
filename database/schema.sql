@@ -17,6 +17,9 @@ CREATE TABLE IF NOT EXISTS registros (
     horas_sueno FLOAT NOT NULL,
     tareas INT NOT NULL,
     nota FLOAT NOT NULL,
+    porcentaje FLOAT NOT NULL DEFAULT 0,
+    actividad VARCHAR(120) NOT NULL DEFAULT 'Nota',
+    es_futura BOOLEAN NOT NULL DEFAULT FALSE,
     productividad FLOAT NOT NULL,
     fecha DATE NOT NULL,
     FOREIGN KEY (estudiante_id) REFERENCES usuarios(id)

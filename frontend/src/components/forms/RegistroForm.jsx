@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Save } from 'lucide-react';
 
 const initialState = {
+  actividad: 'Parcial 1',
   horas_estudio: 2,
   horas_sueno: 8,
   tareas: 1,
   nota: 3.5,
+  porcentaje: 20,
+  estado_nota: 'pasada',
   fecha: new Date().toISOString().slice(0, 10),
 };
 
@@ -25,13 +28,45 @@ export default function RegistroForm({ onSubmit }) {
       horas_sueno: Number(form.horas_sueno),
       tareas: Number(form.tareas),
       nota: Number(form.nota),
+      porcentaje: Number(form.porcentaje),
+      es_futura: form.estado_nota === 'futura',
     });
     setForm(initialState);
   };
 
   return (
     <form className="panel form-grid" onSubmit={handleSubmit}>
-      <h3>Nuevo registro</h3>
+      <div>
+        <p className="eyebrow">Notas de la materia</p>
+        <h3>Nuevo registro</h3>
+      </div>
+      <label>
+        Actividad
+        <input name="actividad" type="text" maxLength="120" value={form.actividad} onChange={handleChange} placeholder="Parcial, quiz, taller..." />
+      </label>
+      <div className="form-row">
+        <label>
+          Nota obtenida o esperada
+          <input name="nota" type="number" min="0" max="5" step="0.1" value={form.nota} onChange={handleChange} />
+        </label>
+        <label>
+          Porcentaje
+          <input name="porcentaje" type="number" min="0" max="100" step="1" value={form.porcentaje} onChange={handleChange} />
+        </label>
+      </div>
+      <div className="field-group">
+        <span>Estado de la nota</span>
+        <div className="segmented-control">
+          <label>
+            <input name="estado_nota" type="radio" value="pasada" checked={form.estado_nota === 'pasada'} onChange={handleChange} />
+            Nota pasada
+          </label>
+          <label>
+            <input name="estado_nota" type="radio" value="futura" checked={form.estado_nota === 'futura'} onChange={handleChange} />
+            Nota futura
+          </label>
+        </div>
+      </div>
       <label>
         Horas de estudio
         <input name="horas_estudio" type="number" min="0" max="24" step="0.5" value={form.horas_estudio} onChange={handleChange} />
@@ -43,10 +78,6 @@ export default function RegistroForm({ onSubmit }) {
       <label>
         Tareas
         <input name="tareas" type="number" min="0" value={form.tareas} onChange={handleChange} />
-      </label>
-      <label>
-        Nota
-        <input name="nota" type="number" min="0" max="5" step="0.1" value={form.nota} onChange={handleChange} />
       </label>
       <label>
         Fecha

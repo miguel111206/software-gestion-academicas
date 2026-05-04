@@ -3,6 +3,7 @@ import AppShell from '../components/layout/AppShell.jsx';
 import MetricCard from '../components/ui/MetricCard.jsx';
 import RegistroForm from '../components/forms/RegistroForm.jsx';
 import ProductivityChart from '../components/charts/ProductivityChart.jsx';
+import GradesSummary from '../components/grades/GradesSummary.jsx';
 import { crearRegistro, miAnalisis, misRegistros } from '../api/registros.api.js';
 import { misAlertas } from '../api/alertas.api.js';
 
@@ -43,6 +44,7 @@ export default function StudentDashboard() {
         <RegistroForm onSubmit={handleCreate} />
         <ProductivityChart data={registros} />
       </section>
+      <GradesSummary registros={registros} />
       <section className="panel">
         <h3>Alertas y recomendaciones</h3>
         <div className="list">

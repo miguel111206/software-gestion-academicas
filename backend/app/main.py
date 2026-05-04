@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
 from app.core.database import Base, engine
+from app.core.migrations import ensure_registros_grade_columns
 from app.models import Alerta, Registro, Usuario
 from app.routers import alertas, analisis, auth, estudiantes, profesores, registros
 
@@ -34,6 +35,7 @@ app.add_middleware(
 def on_startup():
     logger.info("Inicializando base de datos")
     Base.metadata.create_all(bind=engine)
+    ensure_registros_grade_columns()
     logger.info("Base de datos lista")
 
 

@@ -23,6 +23,9 @@ def crear_registro(
         horas_sueno=payload.horas_sueno,
         tareas=payload.tareas,
         nota=payload.nota,
+        porcentaje=payload.porcentaje,
+        actividad=payload.actividad.strip() or "Nota",
+        es_futura=payload.es_futura,
         fecha=payload.fecha,
         productividad=calcular_productividad(
             payload.horas_estudio,

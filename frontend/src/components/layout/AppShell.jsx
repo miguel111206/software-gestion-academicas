@@ -1,12 +1,13 @@
 import React from 'react';
 import { LogOut } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext.jsx';
 
 export default function AppShell({ title, children }) {
   const { usuario, logout } = useAuth();
   return (
     <div className="app-shell">
-      <aside className="sidebar">
+      <motion.aside className="sidebar" initial={{ x: -24, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.45 }}>
         <div>
           <p className="eyebrow">Calculo integral</p>
           <h1>Sistema Academico Inteligente</h1>
@@ -19,13 +20,13 @@ export default function AppShell({ title, children }) {
           <LogOut size={18} />
           Salir
         </button>
-      </aside>
-      <main className="content">
+      </motion.aside>
+      <motion.main className="content" initial={{ y: 18, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.5, delay: 0.08 }}>
         <header className="page-header">
           <h2>{title}</h2>
         </header>
         {children}
-      </main>
+      </motion.main>
     </div>
   );
 }
