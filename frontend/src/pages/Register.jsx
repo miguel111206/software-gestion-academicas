@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   const [form, setForm] = useState({
     nombre: '',
     correo: '',
@@ -16,11 +17,18 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await register({
-      ...form,
-      semestre: form.rol === 'estudiante' ? Number(form.semestre) : null,
-    });
-    navigate('/login');
+    setError('');
+    try {
+      await register({
+        ...form,
+        semestre: form.rol === 'estudiante' ? Number(form.semestre) : null,
+      });
+      navigate('/login');
+    } catch (requestError) {
+      const detail = requestError.response?.data?.detail || 'No se pudo crear la cuenta';
+      console.warn('No se pudo registrar usuario:', detail);
+      setError(Array.isArray(detail) ? detail.map((item) => item.msg).join('. ') : detail);
+    }
   };
 
   return (
@@ -57,6 +65,7 @@ export default function Register() {
           <UserPlus size={18} />
           Crear cuenta
         </button>
+        {error && <p className="error">{error}</p>}
         <Link to="/login">Ya tengo cuenta</Link>
       </form>
     </main>

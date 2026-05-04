@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppShell from '../components/layout/AppShell.jsx';
 import MetricCard from '../components/ui/MetricCard.jsx';
 import RegistroForm from '../components/forms/RegistroForm.jsx';
