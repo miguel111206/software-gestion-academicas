@@ -15,7 +15,10 @@ export function AuthProvider({ children }) {
     }
     meRequest()
       .then(({ data }) => setUsuario(data))
-      .catch(() => localStorage.removeItem('token'))
+      .catch((error) => {
+        console.warn('No se pudo restaurar la sesion guardada:', error.response?.data?.detail || error.message);
+        localStorage.removeItem('token');
+      })
       .finally(() => setLoading(false));
   }, []);
 

@@ -12,4 +12,17 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const method = error.config?.method?.toUpperCase() || 'HTTP';
+    const url = error.config?.url || 'unknown-url';
+    const status = error.response?.status || 'sin respuesta';
+    const detail = error.response?.data?.detail || error.message;
+
+    console.error(`[API] ${method} ${url} fallo (${status}):`, detail);
+    return Promise.reject(error);
+  },
+);
+
 export default api;

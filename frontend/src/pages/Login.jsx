@@ -15,8 +15,10 @@ export default function Login() {
     try {
       const usuario = await login(form);
       navigate(`/${usuario.rol}`);
-    } catch {
-      setError('Correo o contrasena incorrectos');
+    } catch (error) {
+      const detail = error.response?.data?.detail || 'Correo o contrasena incorrectos';
+      console.warn('No se pudo iniciar sesion:', detail);
+      setError(detail);
     }
   };
 

@@ -1,4 +1,8 @@
-from fastapi import FastAPI
+import logging
+import sys
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import get_settings
@@ -7,6 +11,13 @@ from app.models import Alerta, Registro, Usuario
 from app.routers import alertas, analisis, auth, estudiantes, profesores, registros
 
 settings = get_settings()
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title=settings.app_name)
 
@@ -21,7 +32,18 @@ app.add_middleware(
 
 @app.on_event("startup")
 def on_startup():
+    logger.info("Inicializando base de datos")
     Base.metadata.create_all(bind=engine)
+    logger.info("Base de datos lista")
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    logger.exception("Error no controlado en %s %s", request.method, request.url.path)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Error interno del servidor"},
+    )
 
 
 @app.get("/api/health")
