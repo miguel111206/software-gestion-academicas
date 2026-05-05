@@ -13,6 +13,7 @@ export default function StudentDashboard() {
   const [analisis, setAnalisis] = useState(null);
   const [alertas, setAlertas] = useState([]);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('notas');
   const [materias, setMaterias] = useState(() => {
     const saved = localStorage.getItem('materias');
     return saved ? JSON.parse(saved) : ['Calculo integral'];
@@ -97,45 +98,60 @@ export default function StudentDashboard() {
         <MetricCard label="Registros de materia" value={analisisMateria.registros} />
       </section>
 
-      <section className="dashboard-section">
-        <div className="section-heading">
-          <p className="eyebrow">Seccion 1</p>
-          <h3>Notas y simulacion por materia</h3>
-        </div>
-        <div className="two-columns">
-          <RegistroForm materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} onCreateSubject={handleCreateSubject} onSubmit={handleCreate} />
-          <GradesSummary registros={registrosMateria} materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} />
-        </div>
-      </section>
+      <nav className="tabs" aria-label="Secciones del dashboard">
+        <button className={activeTab === 'notas' ? 'active' : ''} type="button" onClick={() => setActiveTab('notas')}>Notas</button>
+        <button className={activeTab === 'graficos' ? 'active' : ''} type="button" onClick={() => setActiveTab('graficos')}>Graficos</button>
+        <button className={activeTab === 'calculo' ? 'active' : ''} type="button" onClick={() => setActiveTab('calculo')}>Calculo integral</button>
+        <button className={activeTab === 'alertas' ? 'active' : ''} type="button" onClick={() => setActiveTab('alertas')}>Alertas</button>
+      </nav>
 
-      <section className="dashboard-section">
-        <div className="section-heading">
-          <p className="eyebrow">Seccion 2</p>
-          <h3>Habitos y productividad</h3>
-        </div>
-        <ProductivityChart data={registrosMateria} />
-      </section>
+      {activeTab === 'notas' && (
+        <section className="dashboard-section">
+          <div className="section-heading">
+            <p className="eyebrow">Notas</p>
+            <h3>Registro y simulacion por materia</h3>
+          </div>
+          <div className="two-columns">
+            <RegistroForm materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} onCreateSubject={handleCreateSubject} onSubmit={handleCreate} />
+            <GradesSummary registros={registrosMateria} materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} />
+          </div>
+        </section>
+      )}
 
-      <section className="dashboard-section">
-        <div className="section-heading">
-          <p className="eyebrow">Seccion 3</p>
-          <h3>Modelo de calculo integral</h3>
-        </div>
-        <IntegralSection registros={registrosMateria} materia={materiaSeleccionada} />
-      </section>
+      {activeTab === 'graficos' && (
+        <section className="dashboard-section">
+          <div className="section-heading">
+            <p className="eyebrow">Graficos</p>
+            <h3>Habitos y productividad</h3>
+          </div>
+          <ProductivityChart data={registrosMateria} />
+        </section>
+      )}
 
-      <section className="panel">
-        <h3>Alertas y recomendaciones</h3>
-        <div className="list">
-          {alertas.map((alerta) => (
-            <article key={alerta.id} className={`risk risk-${alerta.riesgo}`}>
-              <strong>{alerta.riesgo}</strong>
-              <span>{alerta.mensaje}</span>
-            </article>
-          ))}
-          {alertas.length === 0 && <p>No tienes alertas pendientes.</p>}
-        </div>
-      </section>
+      {activeTab === 'calculo' && (
+        <section className="dashboard-section">
+          <div className="section-heading">
+            <p className="eyebrow">Calculo integral</p>
+            <h3>Modelo de rendimiento</h3>
+          </div>
+          <IntegralSection registros={registrosMateria} materia={materiaSeleccionada} />
+        </section>
+      )}
+
+      {activeTab === 'alertas' && (
+        <section className="panel">
+          <h3>Alertas y recomendaciones</h3>
+          <div className="list">
+            {alertas.map((alerta) => (
+              <article key={alerta.id} className={`risk risk-${alerta.riesgo}`}>
+                <strong>{alerta.riesgo}</strong>
+                <span>{alerta.mensaje}</span>
+              </article>
+            ))}
+            {alertas.length === 0 && <p>No tienes alertas pendientes.</p>}
+          </div>
+        </section>
+      )}
     </AppShell>
   );
 }

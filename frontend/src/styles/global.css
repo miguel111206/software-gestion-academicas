@@ -237,8 +237,44 @@ textarea {
 .metrics-grid,
 .two-columns,
 .grades-panel,
-.dashboard-section {
+.dashboard-section,
+.tabs {
   margin-bottom: 18px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid rgba(217, 225, 239, 0.9);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 10px 24px rgba(23, 32, 51, 0.06);
+  backdrop-filter: blur(14px);
+}
+
+.tabs button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 14px;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.tabs button:hover {
+  transform: translateY(-1px);
+  color: #0f766e;
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #0f766e, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.18);
 }
 
 .dashboard-section {
