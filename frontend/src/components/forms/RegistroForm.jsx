@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Save, X } from 'lucide-react';
 
 const initialState = {
@@ -13,14 +13,21 @@ const initialState = {
   fecha: new Date().toISOString().slice(0, 10),
 };
 
-export default function RegistroForm({ materias = ['Calculo integral'], onCreateSubject, onSubmit }) {
+export default function RegistroForm({ materias = ['Calculo integral'], materiaActiva = 'Calculo integral', onMateriaChange, onCreateSubject, onSubmit }) {
   const [form, setForm] = useState(initialState);
   const [creatingSubject, setCreatingSubject] = useState(false);
   const [newSubject, setNewSubject] = useState('');
 
+  useEffect(() => {
+    setForm((current) => ({ ...current, materia: materiaActiva }));
+  }, [materiaActiva]);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
+    if (name === 'materia') {
+      onMateriaChange?.(value);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -34,7 +41,7 @@ export default function RegistroForm({ materias = ['Calculo integral'], onCreate
       porcentaje: Number(form.porcentaje),
       es_futura: form.estado_nota === 'futura',
     });
-    setForm(initialState);
+    setForm({ ...initialState, materia: form.materia });
   };
 
   const handleCreateSubject = () => {

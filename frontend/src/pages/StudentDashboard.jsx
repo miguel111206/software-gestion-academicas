@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AppShell from '../components/layout/AppShell.jsx';
 import MetricCard from '../components/ui/MetricCard.jsx';
 import RegistroForm from '../components/forms/RegistroForm.jsx';
@@ -15,6 +15,7 @@ export default function StudentDashboard() {
     const saved = localStorage.getItem('materias');
     return saved ? JSON.parse(saved) : ['Calculo integral'];
   });
+  const [materiaActiva, setMateriaActiva] = useState(() => localStorage.getItem('materiaActiva') || 'Calculo integral');
 
   const loadData = async () => {
     const [registrosRes, analisisRes, alertasRes] = await Promise.all([
@@ -50,21 +51,47 @@ export default function StudentDashboard() {
       localStorage.setItem('materias', JSON.stringify(merged));
       return merged;
     });
+    setMateriaActiva(clean);
+    localStorage.setItem('materiaActiva', clean);
   };
+
+  const handleSubjectChange = (materia) => {
+    setMateriaActiva(materia);
+    localStorage.setItem('materiaActiva', materia);
+  };
+
+  const materiaSeleccionada = materias.includes(materiaActiva) ? materiaActiva : materias[0] || 'Calculo integral';
+  const registrosMateria = useMemo(
+    () => registros.filter((item) => (item.materia || 'Calculo integral') === materiaSeleccionada),
+    [materiaSeleccionada, registros],
+  );
+  const analisisMateria = useMemo(() => {
+    const notasPasadas = registrosMateria.filter((item) => !item.es_futura && item.fecha <= new Date().toISOString().slice(0, 10));
+    const peso = notasPasadas.reduce((total, item) => total + Number(item.porcentaje || 0), 0);
+    const acumulado = notasPasadas.reduce((total, item) => total + Number(item.nota || 0) * (Number(item.porcentaje || 0) / 100), 0);
+    const promedio = peso > 0 ? (acumulado / peso) * 100 : 0;
+
+    return {
+      acumulado: acumulado.toFixed(2),
+      promedio: promedio.toFixed(2),
+      porcentaje: `${peso}%`,
+      registros: registrosMateria.length,
+    };
+  }, [registrosMateria]);
 
   return (
     <AppShell title="Dashboard estudiante">
       <section className="metrics-grid">
-        <MetricCard label="Rendimiento acumulado" value={analisis?.rendimiento_acumulado ?? 0} />
-        <MetricCard label="Promedio integral" value={analisis?.promedio_integral ?? 0} />
-        <MetricCard label="Prediccion nota" value={analisis?.prediccion_nota ?? 'Sin datos'} />
-        <MetricCard label="Riesgo" value={analisis?.riesgo ?? 'medio'} />
+        <MetricCard label="Llevas en la materia" value={analisisMateria.acumulado} />
+        <MetricCard label="Promedio segun evaluado" value={analisisMateria.promedio} />
+        <MetricCard label="Porcentaje evaluado" value={analisisMateria.porcentaje} />
+        <MetricCard label="Registros de materia" value={analisisMateria.registros} />
       </section>
       <section className="two-columns">
-        <RegistroForm materias={materias} onCreateSubject={handleCreateSubject} onSubmit={handleCreate} />
-        <ProductivityChart data={registros} />
+        <RegistroForm materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} onCreateSubject={handleCreateSubject} onSubmit={handleCreate} />
+        <ProductivityChart data={registrosMateria} />
       </section>
-      <GradesSummary registros={registros} materias={materias} />
+      <GradesSummary registros={registrosMateria} materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} />
       <section className="panel">
         <h3>Alertas y recomendaciones</h3>
         <div className="list">

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { Calculator, CalendarClock, CheckCircle2 } from 'lucide-react';
 
 const today = new Date().toISOString().slice(0, 10);
@@ -48,15 +48,9 @@ function GradeTable({ title, icon, items, emptyText }) {
   );
 }
 
-export default function GradesSummary({ registros, materias: materiasBase = [] }) {
-  const materias = useMemo(() => {
-    const names = registros.map((item) => item.materia || 'Calculo integral');
-    return [...new Set([...materiasBase, ...names])].sort((a, b) => a.localeCompare(b));
-  }, [materiasBase, registros]);
-  const [materiaActiva, setMateriaActiva] = useState('');
-  const materiaSeleccionada = materiaActiva || materias[0] || 'Calculo integral';
-  const registrosMateria = registros.filter((item) => (item.materia || 'Calculo integral') === materiaSeleccionada);
-  const stats = getGradeStats(registrosMateria);
+export default function GradesSummary({ registros, materias = [], materiaActiva = 'Calculo integral', onMateriaChange }) {
+  const materiaSeleccionada = materias.includes(materiaActiva) ? materiaActiva : materias[0] || 'Calculo integral';
+  const stats = getGradeStats(registros);
   const rendimiento = stats.pastWeight > 0 ? (stats.earned / (5 * (stats.pastWeight / 100))) * 100 : 0;
 
   return (
@@ -70,7 +64,7 @@ export default function GradesSummary({ registros, materias: materiasBase = [] }
       </div>
       <label className="subject-picker">
         Materia
-        <select value={materiaSeleccionada} onChange={(event) => setMateriaActiva(event.target.value)}>
+        <select value={materiaSeleccionada} onChange={(event) => onMateriaChange?.(event.target.value)}>
           {materias.length === 0 && <option>Calculo integral</option>}
           {materias.map((materia) => (
             <option key={materia} value={materia}>{materia}</option>
