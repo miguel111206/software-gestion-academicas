@@ -803,3 +803,94 @@ button:disabled {
     transform: translateY(-18px) rotate(-8deg);
   }
 }
+
+/* Dark blue, black and white theme overrides */
+:root {
+  color: #0b1220;
+  background: #020617;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(29, 78, 216, 0.42), transparent 30%),
+    linear-gradient(135deg, #020617 0%, #0b1220 48%, #0f2a5f 100%);
+}
+
+.app-shell {
+  background:
+    linear-gradient(145deg, rgba(29, 78, 216, 0.24), transparent 34%),
+    linear-gradient(315deg, rgba(2, 6, 23, 0.28), transparent 34%),
+    #f8fafc;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, #020617, #0f2a5f 58%, #1d4ed8);
+}
+
+.sidebar::after {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+.auth-card,
+.panel,
+.metric,
+.tabs {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(15, 23, 42, 0.16);
+  box-shadow: 0 18px 42px rgba(2, 6, 23, 0.16);
+}
+
+.primary-button,
+.tabs button.active,
+.segmented-control label:has(input:checked) {
+  background: linear-gradient(135deg, #020617, #1d4ed8);
+  box-shadow: 0 10px 22px rgba(29, 78, 216, 0.26);
+}
+
+.primary-button:hover,
+.ghost-button:hover,
+.icon-button:hover,
+.ghost-action:hover,
+.danger-button:hover {
+  box-shadow: 0 12px 26px rgba(29, 78, 216, 0.28);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.18);
+}
+
+.tabs button:hover,
+.grades-header strong,
+.habit-score svg,
+.habit-score strong,
+.integral-grid svg,
+.grade-row b {
+  color: #1d4ed8;
+}
+
+.grade-progress span {
+  background: linear-gradient(90deg, #020617, #1d4ed8);
+}
+
+.habit-score {
+  background: linear-gradient(135deg, rgba(2, 6, 23, 0.08), rgba(29, 78, 216, 0.16));
+}
+
+.simulation-note {
+  border-color: rgba(29, 78, 216, 0.28);
+  background: rgba(239, 246, 255, 0.94);
+  color: #1e3a8a;
+}
+
+.student-row:hover,
+.student-row.selected {
+  border-color: #1d4ed8;
+}
+
+.student-row.selected {
+  background: #eff6ff;
+  box-shadow: 0 10px 24px rgba(29, 78, 216, 0.16);
+}
