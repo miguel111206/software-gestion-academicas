@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS registros (
     nota FLOAT NOT NULL,
     porcentaje FLOAT NOT NULL DEFAULT 0,
     actividad VARCHAR(120) NOT NULL DEFAULT 'Nota',
+    materia VARCHAR(120) NOT NULL DEFAULT 'Calculo integral',
     es_futura BOOLEAN NOT NULL DEFAULT FALSE,
     productividad FLOAT NOT NULL,
     fecha DATE NOT NULL,

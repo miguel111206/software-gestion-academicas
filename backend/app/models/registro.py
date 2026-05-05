@@ -17,6 +17,7 @@ class Registro(Base):
     nota: Mapped[float] = mapped_column(Float, nullable=False)
     porcentaje: Mapped[float] = mapped_column(Float, nullable=False, default=0)
     actividad: Mapped[str] = mapped_column(String(120), nullable=False, default="Nota")
+    materia: Mapped[str] = mapped_column(String(120), nullable=False, default="Calculo integral")
     es_futura: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     productividad: Mapped[float] = mapped_column(Float, nullable=False)
     fecha: Mapped[date] = mapped_column(Date, nullable=False, index=True)

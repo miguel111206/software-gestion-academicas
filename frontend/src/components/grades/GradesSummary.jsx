@@ -1,5 +1,5 @@
-import React from 'react';
-import { CalendarClock, CheckCircle2 } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { Calculator, CalendarClock, CheckCircle2 } from 'lucide-react';
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -48,29 +48,52 @@ function GradeTable({ title, icon, items, emptyText }) {
   );
 }
 
-export default function GradesSummary({ registros }) {
-  const stats = getGradeStats(registros);
+export default function GradesSummary({ registros, materias: materiasBase = [] }) {
+  const materias = useMemo(() => {
+    const names = registros.map((item) => item.materia || 'Calculo integral');
+    return [...new Set([...materiasBase, ...names])].sort((a, b) => a.localeCompare(b));
+  }, [materiasBase, registros]);
+  const [materiaActiva, setMateriaActiva] = useState('');
+  const materiaSeleccionada = materiaActiva || materias[0] || 'Calculo integral';
+  const registrosMateria = registros.filter((item) => (item.materia || 'Calculo integral') === materiaSeleccionada);
+  const stats = getGradeStats(registrosMateria);
+  const rendimiento = stats.pastWeight > 0 ? (stats.earned / (5 * (stats.pastWeight / 100))) * 100 : 0;
 
   return (
     <section className="panel grades-panel">
       <div className="grades-header">
         <div>
           <p className="eyebrow">Promedio ponderado</p>
-          <h3>Notas de la materia</h3>
+          <h3>{materiaSeleccionada}</h3>
         </div>
         <strong>{stats.weightedAverage.toFixed(2)}</strong>
       </div>
+      <label className="subject-picker">
+        Materia
+        <select value={materiaSeleccionada} onChange={(event) => setMateriaActiva(event.target.value)}>
+          {materias.length === 0 && <option>Calculo integral</option>}
+          {materias.map((materia) => (
+            <option key={materia} value={materia}>{materia}</option>
+          ))}
+        </select>
+      </label>
       <div className="grade-progress">
         <span style={{ width: `${Math.min(stats.pastWeight, 100)}%` }} />
       </div>
       <div className="grade-stats">
+        <span>Llevas: <b>{stats.earned.toFixed(2)}</b></span>
         <span>Ya cuenta: <b>{stats.pastWeight}%</b></span>
+        <span>Rendimiento: <b>{rendimiento.toFixed(0)}%</b></span>
         <span>Falta: <b>{Math.max(100 - stats.pastWeight, 0)}%</b></span>
-        <span>Proyeccion: <b>{stats.projected.toFixed(2)}</b></span>
+        <span>Simulacion final: <b>{stats.projected.toFixed(2)}</b></span>
+      </div>
+      <div className="simulation-note">
+        <Calculator size={18} />
+        Las notas futuras se suman como simulacion. Cambia o agrega actividades futuras en el formulario para probar escenarios.
       </div>
       <div className="grades-columns">
         <GradeTable title="Notas registradas" icon={<CheckCircle2 size={18} />} items={stats.past} emptyText="Aun no hay notas que ya hayan pasado." />
-        <GradeTable title="Notas futuras" icon={<CalendarClock size={18} />} items={stats.future} emptyText="Aun no hay notas futuras registradas." />
+        <GradeTable title="Simulacion de notas futuras" icon={<CalendarClock size={18} />} items={stats.future} emptyText="Aun no hay notas futuras registradas." />
       </div>
     </section>
   );

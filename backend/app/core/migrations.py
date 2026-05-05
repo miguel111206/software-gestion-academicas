@@ -15,6 +15,8 @@ def ensure_registros_grade_columns():
         statements.append("ALTER TABLE registros ADD COLUMN porcentaje FLOAT NOT NULL DEFAULT 0")
     if "actividad" not in columns:
         statements.append("ALTER TABLE registros ADD COLUMN actividad VARCHAR(120) NOT NULL DEFAULT 'Nota'")
+    if "materia" not in columns:
+        statements.append("ALTER TABLE registros ADD COLUMN materia VARCHAR(120) NOT NULL DEFAULT 'Calculo integral'")
     if "es_futura" not in columns:
         statements.append("ALTER TABLE registros ADD COLUMN es_futura BOOLEAN NOT NULL DEFAULT FALSE")
 

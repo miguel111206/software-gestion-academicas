@@ -11,6 +11,10 @@ export default function StudentDashboard() {
   const [registros, setRegistros] = useState([]);
   const [analisis, setAnalisis] = useState(null);
   const [alertas, setAlertas] = useState([]);
+  const [materias, setMaterias] = useState(() => {
+    const saved = localStorage.getItem('materias');
+    return saved ? JSON.parse(saved) : ['Calculo integral'];
+  });
 
   const loadData = async () => {
     const [registrosRes, analisisRes, alertasRes] = await Promise.all([
@@ -21,6 +25,12 @@ export default function StudentDashboard() {
     setRegistros(registrosRes.data);
     setAnalisis(analisisRes.data);
     setAlertas(alertasRes.data);
+    setMaterias((current) => {
+      const fromRegistros = registrosRes.data.map((item) => item.materia || 'Calculo integral');
+      const merged = [...new Set([...current, ...fromRegistros])].sort((a, b) => a.localeCompare(b));
+      localStorage.setItem('materias', JSON.stringify(merged));
+      return merged;
+    });
   };
 
   useEffect(() => {
@@ -32,6 +42,16 @@ export default function StudentDashboard() {
     await loadData();
   };
 
+  const handleCreateSubject = (materia) => {
+    const clean = materia.trim();
+    if (!clean) return;
+    setMaterias((current) => {
+      const merged = [...new Set([...current, clean])].sort((a, b) => a.localeCompare(b));
+      localStorage.setItem('materias', JSON.stringify(merged));
+      return merged;
+    });
+  };
+
   return (
     <AppShell title="Dashboard estudiante">
       <section className="metrics-grid">
@@ -41,10 +61,10 @@ export default function StudentDashboard() {
         <MetricCard label="Riesgo" value={analisis?.riesgo ?? 'medio'} />
       </section>
       <section className="two-columns">
-        <RegistroForm onSubmit={handleCreate} />
+        <RegistroForm materias={materias} onCreateSubject={handleCreateSubject} onSubmit={handleCreate} />
         <ProductivityChart data={registros} />
       </section>
-      <GradesSummary registros={registros} />
+      <GradesSummary registros={registros} materias={materias} />
       <section className="panel">
         <h3>Alertas y recomendaciones</h3>
         <div className="list">

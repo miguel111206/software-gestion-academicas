@@ -10,6 +10,7 @@ class RegistroCreate(BaseModel):
     nota: float = Field(ge=0, le=5)
     porcentaje: float = Field(default=0, ge=0, le=100)
     actividad: str = Field(default="Nota", min_length=1, max_length=120)
+    materia: str = Field(default="Calculo integral", min_length=1, max_length=120)
     es_futura: bool = False
     fecha: date
 

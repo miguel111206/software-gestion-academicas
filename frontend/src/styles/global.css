@@ -85,6 +85,22 @@ label {
   font-weight: 700;
 }
 
+.subject-control,
+.subject-create {
+  display: flex;
+  gap: 8px;
+}
+
+.subject-control select,
+.subject-create input {
+  min-width: 0;
+  flex: 1;
+}
+
+.subject-create .primary-button {
+  min-width: 88px;
+}
+
 input,
 select,
 textarea {
@@ -111,7 +127,8 @@ textarea {
 }
 
 .primary-button,
-.ghost-button {
+.ghost-button,
+.icon-button {
   border: 0;
   border-radius: 8px;
   padding: 11px 14px;
@@ -134,8 +151,17 @@ textarea {
   color: #f8fafc;
 }
 
+.icon-button {
+  width: 46px;
+  min-width: 46px;
+  padding: 0;
+  background: #e8eef9;
+  color: #172033;
+}
+
 .primary-button:hover,
-.ghost-button:hover {
+.ghost-button:hover,
+.icon-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 22px rgba(15, 118, 110, 0.18);
 }
@@ -305,6 +331,10 @@ textarea {
   gap: 16px;
 }
 
+.subject-picker {
+  margin: 12px 0;
+}
+
 .grades-header strong {
   color: #0f766e;
   font-size: clamp(2rem, 5vw, 3.5rem);
@@ -339,6 +369,19 @@ textarea {
   border-radius: 999px;
   padding: 7px 10px;
   color: #475569;
+}
+
+.simulation-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 1px solid rgba(20, 184, 166, 0.28);
+  border-radius: 8px;
+  background: rgba(240, 253, 250, 0.86);
+  color: #115e59;
+  font-weight: 700;
 }
 
 .grade-list h4 {

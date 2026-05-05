@@ -25,6 +25,7 @@ def crear_registro(
         nota=payload.nota,
         porcentaje=payload.porcentaje,
         actividad=payload.actividad.strip() or "Nota",
+        materia=payload.materia.strip() or "Calculo integral",
         es_futura=payload.es_futura,
         fecha=payload.fecha,
         productividad=calcular_productividad(

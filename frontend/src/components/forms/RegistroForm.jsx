@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Save } from 'lucide-react';
+import { Plus, Save, X } from 'lucide-react';
 
 const initialState = {
+  materia: 'Calculo integral',
   actividad: 'Parcial 1',
   horas_estudio: 2,
   horas_sueno: 8,
@@ -12,8 +13,10 @@ const initialState = {
   fecha: new Date().toISOString().slice(0, 10),
 };
 
-export default function RegistroForm({ onSubmit }) {
+export default function RegistroForm({ materias = ['Calculo integral'], onCreateSubject, onSubmit }) {
   const [form, setForm] = useState(initialState);
+  const [creatingSubject, setCreatingSubject] = useState(false);
+  const [newSubject, setNewSubject] = useState('');
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -34,11 +37,41 @@ export default function RegistroForm({ onSubmit }) {
     setForm(initialState);
   };
 
+  const handleCreateSubject = () => {
+    const clean = newSubject.trim();
+    if (!clean) return;
+    onCreateSubject?.(clean);
+    setForm((current) => ({ ...current, materia: clean }));
+    setNewSubject('');
+    setCreatingSubject(false);
+  };
+
   return (
     <form className="panel form-grid" onSubmit={handleSubmit}>
       <div>
         <p className="eyebrow">Notas de la materia</p>
         <h3>Nuevo registro</h3>
+      </div>
+      <div className="field-group">
+        <span>Materia</span>
+        <div className="subject-control">
+          <select name="materia" value={form.materia} onChange={handleChange}>
+            {materias.map((materia) => (
+              <option key={materia} value={materia}>{materia}</option>
+            ))}
+          </select>
+          <button className="icon-button" type="button" onClick={() => setCreatingSubject((current) => !current)} aria-label="Crear materia">
+            {creatingSubject ? <X size={18} /> : <Plus size={18} />}
+          </button>
+        </div>
+        {creatingSubject && (
+          <div className="subject-create">
+            <input value={newSubject} onChange={(event) => setNewSubject(event.target.value)} placeholder="Nombre de la materia" />
+            <button className="primary-button" type="button" onClick={handleCreateSubject}>
+              Crear
+            </button>
+          </div>
+        )}
       </div>
       <label>
         Actividad
