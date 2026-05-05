@@ -6,7 +6,7 @@ import ProductivityChart from '../components/charts/ProductivityChart.jsx';
 import HabitSimulator from '../components/charts/HabitSimulator.jsx';
 import GradesSummary from '../components/grades/GradesSummary.jsx';
 import IntegralSection from '../components/calculus/IntegralSection.jsx';
-import { crearRegistro, miAnalisis, misRegistros } from '../api/registros.api.js';
+import { actualizarRegistro, crearRegistro, eliminarRegistro, miAnalisis, misRegistros } from '../api/registros.api.js';
 import { misAlertas } from '../api/alertas.api.js';
 
 export default function StudentDashboard() {
@@ -50,6 +50,16 @@ export default function StudentDashboard() {
 
   const handleCreate = async (payload) => {
     await crearRegistro(payload);
+    await loadData();
+  };
+
+  const handleUpdate = async (id, payload) => {
+    await actualizarRegistro(id, payload);
+    await loadData();
+  };
+
+  const handleDelete = async (id) => {
+    await eliminarRegistro(id);
     await loadData();
   };
 
@@ -126,7 +136,7 @@ export default function StudentDashboard() {
             <h3>Habitos y productividad</h3>
           </div>
           <div className="two-columns">
-            <HabitSimulator />
+            <HabitSimulator registros={registrosMateria} materia={materiaSeleccionada} onCreate={handleCreate} onUpdate={handleUpdate} onDelete={handleDelete} />
             <ProductivityChart data={registrosMateria} />
           </div>
         </section>

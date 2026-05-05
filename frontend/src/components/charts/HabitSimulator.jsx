@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { Activity, BookOpen, Moon, NotebookTabs } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Activity, BookOpen, Moon, NotebookTabs, Save, Trash2 } from 'lucide-react';
 
 const initialState = {
   horas_estudio: 2,
@@ -17,13 +17,85 @@ function calculateProductivity(form) {
   return Math.max(0, Math.min((estudioScore * 35) + (suenoBalanceado * 20) + (tareasScore * 20) + (notaScore * 25), 100));
 }
 
-export default function HabitSimulator() {
+function toForm(registro) {
+  return {
+    horas_estudio: registro?.horas_estudio ?? initialState.horas_estudio,
+    horas_sueno: registro?.horas_sueno ?? initialState.horas_sueno,
+    tareas: registro?.tareas ?? initialState.tareas,
+    nota: registro?.nota ?? initialState.nota,
+    fecha: registro?.fecha ?? initialState.fecha,
+  };
+}
+
+export default function HabitSimulator({ registros = [], materia, onCreate, onUpdate, onDelete }) {
   const [form, setForm] = useState(initialState);
+  const [selectedId, setSelectedId] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const productividad = useMemo(() => calculateProductivity(form), [form]);
+
+  const selectedRegistro = registros.find((item) => String(item.id) === String(selectedId));
+
+  useEffect(() => {
+    if (selectedRegistro) {
+      setForm(toForm(selectedRegistro));
+    }
+  }, [selectedRegistro]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
+  };
+
+  const payload = {
+    materia,
+    actividad: selectedRegistro?.actividad || 'Registro de habitos',
+    porcentaje: selectedRegistro?.porcentaje || 0,
+    es_futura: selectedRegistro?.es_futura || false,
+    horas_estudio: Number(form.horas_estudio),
+    horas_sueno: Number(form.horas_sueno),
+    tareas: Number(form.tareas),
+    nota: Number(form.nota),
+    fecha: form.fecha,
+  };
+
+  const handleSave = async () => {
+    setError('');
+    setSaving(true);
+    try {
+      if (selectedId) {
+        await onUpdate?.(selectedId, payload);
+      } else {
+        await onCreate?.(payload);
+      }
+      setSelectedId('');
+      setForm(initialState);
+    } catch (err) {
+      setError(err.response?.data?.detail || 'No se pudo guardar el registro.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!selectedId) return;
+    setError('');
+    setSaving(true);
+    try {
+      await onDelete?.(selectedId);
+      setSelectedId('');
+      setForm(initialState);
+    } catch (err) {
+      setError(err.response?.data?.detail || 'No se pudo eliminar el registro.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleNew = () => {
+    setSelectedId('');
+    setForm(initialState);
+    setError('');
   };
 
   return (
@@ -37,6 +109,17 @@ export default function HabitSimulator() {
         <span>Rendimiento estimado</span>
         <strong>{productividad.toFixed(1)}</strong>
       </div>
+      <label>
+        Registro guardado
+        <select value={selectedId} onChange={(event) => setSelectedId(event.target.value)}>
+          <option value="">Nuevo registro</option>
+          {registros.map((registro) => (
+            <option key={registro.id} value={registro.id}>
+              {registro.fecha} - {registro.actividad || 'Registro'} ({Number(registro.productividad || 0).toFixed(1)})
+            </option>
+          ))}
+        </select>
+      </label>
       <div className="form-grid">
         <label>
           Horas de estudio
@@ -64,6 +147,20 @@ export default function HabitSimulator() {
         <span><Moon size={16} /> Sueno balanceado: hasta 20 puntos</span>
         <span><NotebookTabs size={16} /> Tareas: hasta 20 puntos</span>
       </div>
+      <div className="habit-actions">
+        <button className="primary-button" type="button" onClick={handleSave} disabled={saving}>
+          <Save size={18} />
+          {selectedId ? 'Actualizar' : 'Guardar'}
+        </button>
+        <button className="ghost-action" type="button" onClick={handleNew} disabled={saving}>
+          Nuevo
+        </button>
+        <button className="danger-button" type="button" onClick={handleDelete} disabled={!selectedId || saving}>
+          <Trash2 size={18} />
+          Eliminar
+        </button>
+      </div>
+      {error && <p className="error">{error}</p>}
     </div>
   );
 }

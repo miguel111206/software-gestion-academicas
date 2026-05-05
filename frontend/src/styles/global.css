@@ -128,7 +128,9 @@ textarea {
 
 .primary-button,
 .ghost-button,
-.icon-button {
+.icon-button,
+.ghost-action,
+.danger-button {
   border: 0;
   border-radius: 8px;
   padding: 11px 14px;
@@ -159,11 +161,29 @@ textarea {
   color: #172033;
 }
 
+.ghost-action {
+  background: #e8eef9;
+  color: #172033;
+}
+
+.danger-button {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 .primary-button:hover,
 .ghost-button:hover,
-.icon-button:hover {
+.icon-button:hover,
+.ghost-action:hover,
+.danger-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 22px rgba(15, 118, 110, 0.18);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
 }
 
 .error {
@@ -383,6 +403,12 @@ textarea {
 
 .habit-breakdown svg {
   color: #2563eb;
+}
+
+.habit-actions {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
 }
 
 .chart-legend {
