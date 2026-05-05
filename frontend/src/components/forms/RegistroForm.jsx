@@ -119,18 +119,6 @@ export default function RegistroForm({ materias = ['Calculo integral'], materiaA
         </div>
       </div>
       <label>
-        Horas de estudio
-        <input name="horas_estudio" type="number" min="0" max="24" step="0.5" value={form.horas_estudio} onChange={handleChange} />
-      </label>
-      <label>
-        Horas de sueno
-        <input name="horas_sueno" type="number" min="0" max="24" step="0.5" value={form.horas_sueno} onChange={handleChange} />
-      </label>
-      <label>
-        Tareas
-        <input name="tareas" type="number" min="0" value={form.tareas} onChange={handleChange} />
-      </label>
-      <label>
         Fecha
         <input name="fecha" type="date" value={form.fecha} onChange={handleChange} />
       </label>

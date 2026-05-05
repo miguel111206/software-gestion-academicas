@@ -3,6 +3,7 @@ import AppShell from '../components/layout/AppShell.jsx';
 import MetricCard from '../components/ui/MetricCard.jsx';
 import RegistroForm from '../components/forms/RegistroForm.jsx';
 import ProductivityChart from '../components/charts/ProductivityChart.jsx';
+import HabitSimulator from '../components/charts/HabitSimulator.jsx';
 import GradesSummary from '../components/grades/GradesSummary.jsx';
 import IntegralSection from '../components/calculus/IntegralSection.jsx';
 import { crearRegistro, miAnalisis, misRegistros } from '../api/registros.api.js';
@@ -124,7 +125,10 @@ export default function StudentDashboard() {
             <p className="eyebrow">Graficos</p>
             <h3>Habitos y productividad</h3>
           </div>
-          <ProductivityChart data={registrosMateria} />
+          <div className="two-columns">
+            <HabitSimulator />
+            <ProductivityChart data={registrosMateria} />
+          </div>
         </section>
       )}
 

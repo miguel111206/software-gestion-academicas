@@ -338,6 +338,53 @@ textarea {
   min-width: 0;
 }
 
+.habit-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.habit-score {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(37, 99, 235, 0.12));
+}
+
+.habit-score svg {
+  color: #0f766e;
+}
+
+.habit-score span {
+  color: #475569;
+  font-weight: 800;
+}
+
+.habit-score strong {
+  color: #0f766e;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.habit-breakdown {
+  display: grid;
+  gap: 8px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.habit-breakdown span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.habit-breakdown svg {
+  color: #2563eb;
+}
+
 .chart-legend {
   display: flex;
   flex-wrap: wrap;
