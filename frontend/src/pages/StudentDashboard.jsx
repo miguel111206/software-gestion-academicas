@@ -4,6 +4,7 @@ import MetricCard from '../components/ui/MetricCard.jsx';
 import RegistroForm from '../components/forms/RegistroForm.jsx';
 import ProductivityChart from '../components/charts/ProductivityChart.jsx';
 import GradesSummary from '../components/grades/GradesSummary.jsx';
+import IntegralSection from '../components/calculus/IntegralSection.jsx';
 import { crearRegistro, miAnalisis, misRegistros } from '../api/registros.api.js';
 import { misAlertas } from '../api/alertas.api.js';
 
@@ -95,11 +96,34 @@ export default function StudentDashboard() {
         <MetricCard label="Porcentaje evaluado" value={analisisMateria.porcentaje} />
         <MetricCard label="Registros de materia" value={analisisMateria.registros} />
       </section>
-      <section className="two-columns">
-        <RegistroForm materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} onCreateSubject={handleCreateSubject} onSubmit={handleCreate} />
+
+      <section className="dashboard-section">
+        <div className="section-heading">
+          <p className="eyebrow">Seccion 1</p>
+          <h3>Notas y simulacion por materia</h3>
+        </div>
+        <div className="two-columns">
+          <RegistroForm materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} onCreateSubject={handleCreateSubject} onSubmit={handleCreate} />
+          <GradesSummary registros={registrosMateria} materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} />
+        </div>
+      </section>
+
+      <section className="dashboard-section">
+        <div className="section-heading">
+          <p className="eyebrow">Seccion 2</p>
+          <h3>Habitos y productividad</h3>
+        </div>
         <ProductivityChart data={registrosMateria} />
       </section>
-      <GradesSummary registros={registrosMateria} materias={materias} materiaActiva={materiaSeleccionada} onMateriaChange={handleSubjectChange} />
+
+      <section className="dashboard-section">
+        <div className="section-heading">
+          <p className="eyebrow">Seccion 3</p>
+          <h3>Modelo de calculo integral</h3>
+        </div>
+        <IntegralSection registros={registrosMateria} materia={materiaSeleccionada} />
+      </section>
+
       <section className="panel">
         <h3>Alertas y recomendaciones</h3>
         <div className="list">
