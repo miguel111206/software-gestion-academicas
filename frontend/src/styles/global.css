@@ -668,6 +668,12 @@ button:disabled {
   transform: translateY(-2px);
 }
 
+.student-row.selected {
+  border-color: #0f766e;
+  background: #f0fdfa;
+  box-shadow: 0 10px 24px rgba(15, 118, 110, 0.12);
+}
+
 .student-row span {
   display: grid;
   gap: 2px;
@@ -686,6 +692,45 @@ button:disabled {
 .risk {
   display: grid;
   gap: 4px;
+}
+
+.subject-risk {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-height: 76px;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 800;
+}
+
+.subject-risk span {
+  color: inherit;
+  opacity: 0.78;
+}
+
+.subject-risk strong {
+  font-size: 1.35rem;
+  text-transform: uppercase;
+}
+
+.teacher-subject-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.teacher-subject-metrics span {
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+}
+
+.teacher-subject-metrics b {
+  color: #172033;
 }
 
 .risk-bajo {
@@ -708,7 +753,8 @@ button:disabled {
   .two-columns,
   .form-row,
   .grades-columns,
-  .integral-grid {
+  .integral-grid,
+  .teacher-subject-metrics {
     grid-template-columns: 1fr;
   }
 
