@@ -171,6 +171,16 @@ textarea {
   font-weight: 700;
 }
 
+.error-banner {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 800;
+}
+
 .app-shell {
   min-height: 100vh;
   display: grid;

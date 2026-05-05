@@ -11,6 +11,7 @@ export default function StudentDashboard() {
   const [registros, setRegistros] = useState([]);
   const [analisis, setAnalisis] = useState(null);
   const [alertas, setAlertas] = useState([]);
+  const [error, setError] = useState('');
   const [materias, setMaterias] = useState(() => {
     const saved = localStorage.getItem('materias');
     return saved ? JSON.parse(saved) : ['Calculo integral'];
@@ -18,20 +19,26 @@ export default function StudentDashboard() {
   const [materiaActiva, setMateriaActiva] = useState(() => localStorage.getItem('materiaActiva') || 'Calculo integral');
 
   const loadData = async () => {
-    const [registrosRes, analisisRes, alertasRes] = await Promise.all([
-      misRegistros(),
-      miAnalisis(),
-      misAlertas(),
-    ]);
-    setRegistros(registrosRes.data);
-    setAnalisis(analisisRes.data);
-    setAlertas(alertasRes.data);
-    setMaterias((current) => {
-      const fromRegistros = registrosRes.data.map((item) => item.materia || 'Calculo integral');
-      const merged = [...new Set([...current, ...fromRegistros])].sort((a, b) => a.localeCompare(b));
-      localStorage.setItem('materias', JSON.stringify(merged));
-      return merged;
-    });
+    try {
+      setError('');
+      const [registrosRes, analisisRes, alertasRes] = await Promise.all([
+        misRegistros(),
+        miAnalisis(),
+        misAlertas(),
+      ]);
+      setRegistros(registrosRes.data);
+      setAnalisis(analisisRes.data);
+      setAlertas(alertasRes.data);
+      setMaterias((current) => {
+        const fromRegistros = registrosRes.data.map((item) => item.materia || 'Calculo integral');
+        const merged = [...new Set([...current, ...fromRegistros])].sort((a, b) => a.localeCompare(b));
+        localStorage.setItem('materias', JSON.stringify(merged));
+        return merged;
+      });
+    } catch (err) {
+      const detail = err.response?.data?.detail || 'No se pudo cargar la informacion. Verifica que el backend este activo.';
+      setError(detail);
+    }
   };
 
   useEffect(() => {
@@ -81,6 +88,7 @@ export default function StudentDashboard() {
 
   return (
     <AppShell title="Dashboard estudiante">
+      {error && <section className="error-banner">{error}</section>}
       <section className="metrics-grid">
         <MetricCard label="Llevas en la materia" value={analisisMateria.acumulado} />
         <MetricCard label="Promedio segun evaluado" value={analisisMateria.promedio} />

@@ -17,6 +17,8 @@ export default function RegistroForm({ materias = ['Calculo integral'], materiaA
   const [form, setForm] = useState(initialState);
   const [creatingSubject, setCreatingSubject] = useState(false);
   const [newSubject, setNewSubject] = useState('');
+  const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setForm((current) => ({ ...current, materia: materiaActiva }));
@@ -32,16 +34,25 @@ export default function RegistroForm({ materias = ['Calculo integral'], materiaA
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await onSubmit({
-      ...form,
-      horas_estudio: Number(form.horas_estudio),
-      horas_sueno: Number(form.horas_sueno),
-      tareas: Number(form.tareas),
-      nota: Number(form.nota),
-      porcentaje: Number(form.porcentaje),
-      es_futura: form.estado_nota === 'futura',
-    });
-    setForm({ ...initialState, materia: form.materia });
+    setError('');
+    setSaving(true);
+    try {
+      await onSubmit({
+        ...form,
+        horas_estudio: Number(form.horas_estudio),
+        horas_sueno: Number(form.horas_sueno),
+        tareas: Number(form.tareas),
+        nota: Number(form.nota),
+        porcentaje: Number(form.porcentaje),
+        es_futura: form.estado_nota === 'futura',
+      });
+      setForm({ ...initialState, materia: form.materia });
+    } catch (err) {
+      const detail = err.response?.data?.detail || 'No se pudo guardar. Revisa que el backend este corriendo en localhost:8000.';
+      setError(detail);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleCreateSubject = () => {
@@ -125,8 +136,9 @@ export default function RegistroForm({ materias = ['Calculo integral'], materiaA
       </label>
       <button className="primary-button" type="submit">
         <Save size={18} />
-        Guardar
+        {saving ? 'Guardando...' : 'Guardar'}
       </button>
+      {error && <p className="error">{error}</p>}
     </form>
   );
 }
