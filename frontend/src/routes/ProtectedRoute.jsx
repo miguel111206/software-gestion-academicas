@@ -4,7 +4,16 @@ import { useAuth } from '../context/AuthContext.jsx';
 
 export default function ProtectedRoute({ children, rol }) {
   const { usuario, loading } = useAuth();
-  if (loading) return <main className="center-screen">Cargando...</main>;
+  if (loading) {
+    return (
+      <main className="center-screen">
+        <div className="loading-box">
+          <span className="loader" />
+          <strong>Cargando...</strong>
+        </div>
+      </main>
+    );
+  }
   if (!usuario) return <Navigate to="/login" replace />;
   if (rol && usuario.rol !== rol) return <Navigate to={`/${usuario.rol}`} replace />;
   return children;
