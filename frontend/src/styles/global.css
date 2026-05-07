@@ -894,3 +894,351 @@ textarea:focus {
   background: #eff6ff;
   box-shadow: 0 10px 24px rgba(29, 78, 216, 0.16);
 }
+
+/* Red and black animated theme overrides */
+:root {
+  color: #111827;
+  background: #000000;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(220, 38, 38, 0.34), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(127, 29, 29, 0.28), transparent 30%),
+    #000000;
+}
+
+.auth-page,
+.center-screen {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.22), transparent 32%),
+    #000000;
+}
+
+.app-shell {
+  background:
+    radial-gradient(circle at 14% 8%, rgba(220, 38, 38, 0.28), transparent 28%),
+    radial-gradient(circle at 86% 72%, rgba(127, 29, 29, 0.22), transparent 30%),
+    #000000;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, #000000, #1f0505 58%, #7f1d1d);
+  box-shadow: inset -1px 0 0 rgba(248, 113, 113, 0.22);
+}
+
+.sidebar::after {
+  background: rgba(239, 68, 68, 0.36);
+  animation: floatGlow 4.5s ease-in-out infinite;
+}
+
+.auth-card,
+.panel,
+.metric,
+.tabs {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(153, 27, 27, 0.34);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(239, 68, 68, 0.06);
+}
+
+.panel,
+.metric {
+  animation: redPanelIn 0.48s ease both;
+}
+
+.metric {
+  position: relative;
+  overflow: hidden;
+}
+
+.metric::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.metric:hover::before {
+  transform: translateX(100%);
+}
+
+.primary-button,
+.tabs button.active,
+.segmented-control label:has(input:checked) {
+  background: linear-gradient(135deg, #000000, #991b1b, #dc2626);
+  box-shadow: 0 12px 28px rgba(220, 38, 38, 0.34);
+}
+
+.primary-button,
+.ghost-button,
+.icon-button,
+.ghost-action,
+.danger-button,
+.tabs button,
+.student-row,
+.grade-row {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.primary-button:hover,
+.ghost-button:hover,
+.icon-button:hover,
+.ghost-action:hover,
+.danger-button:hover,
+.tabs button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(220, 38, 38, 0.32);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.18);
+}
+
+.tabs {
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.tabs button:hover,
+.grades-header strong,
+.habit-score svg,
+.habit-score strong,
+.integral-grid svg,
+.grade-row b {
+  color: #dc2626;
+}
+
+.grade-progress span {
+  background: linear-gradient(90deg, #000000, #991b1b, #dc2626);
+}
+
+.habit-score {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(220, 38, 38, 0.16));
+}
+
+.simulation-note {
+  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(254, 242, 242, 0.96);
+  color: #7f1d1d;
+}
+
+.student-row:hover,
+.student-row.selected {
+  border-color: #dc2626;
+}
+
+.student-row.selected {
+  background: #fef2f2;
+  box-shadow: 0 12px 26px rgba(220, 38, 38, 0.18);
+}
+
+.dot-blue,
+.dot-teal,
+.dot-purple,
+.dot-orange {
+  background: #dc2626;
+}
+
+@keyframes redPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Theme switch: light blue/white and true dark red/black */
+.sidebar-actions {
+  display: grid;
+  gap: 10px;
+}
+
+body[data-theme="light"] {
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.2), transparent 30%),
+    linear-gradient(135deg, #eef5ff 0%, #ffffff 52%, #dbeafe 100%);
+}
+
+body[data-theme="light"] .app-shell {
+  background:
+    linear-gradient(145deg, rgba(37, 99, 235, 0.18), transparent 36%),
+    linear-gradient(315deg, rgba(255, 255, 255, 0.7), transparent 34%),
+    #f8fafc;
+}
+
+body[data-theme="light"] .sidebar {
+  background: linear-gradient(180deg, #020617, #0f2a5f 58%, #1d4ed8);
+}
+
+body[data-theme="light"] .auth-card,
+body[data-theme="light"] .panel,
+body[data-theme="light"] .metric,
+body[data-theme="light"] .tabs {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(37, 99, 235, 0.16);
+  color: #0f172a;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
+}
+
+body[data-theme="light"] .content h2,
+body[data-theme="light"] .section-heading h3,
+body[data-theme="light"] h3,
+body[data-theme="light"] h4,
+body[data-theme="light"] label,
+body[data-theme="light"] .field-group {
+  color: #0f172a;
+}
+
+body[data-theme="light"] input,
+body[data-theme="light"] select,
+body[data-theme="light"] textarea {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+body[data-theme="light"] .primary-button,
+body[data-theme="light"] .tabs button.active,
+body[data-theme="light"] .segmented-control label:has(input:checked) {
+  background: linear-gradient(135deg, #020617, #1d4ed8);
+  box-shadow: 0 10px 22px rgba(29, 78, 216, 0.24);
+}
+
+body[data-theme="light"] input:focus,
+body[data-theme="light"] select:focus,
+body[data-theme="light"] textarea:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.16);
+}
+
+body[data-theme="light"] .grades-header strong,
+body[data-theme="light"] .habit-score strong,
+body[data-theme="light"] .grade-row b,
+body[data-theme="light"] .tabs button:hover {
+  color: #1d4ed8;
+}
+
+body[data-theme="light"] .grade-progress span {
+  background: linear-gradient(90deg, #020617, #1d4ed8);
+}
+
+body[data-theme="dark"] {
+  background:
+    radial-gradient(circle at 15% 8%, rgba(220, 38, 38, 0.3), transparent 28%),
+    radial-gradient(circle at 90% 80%, rgba(127, 29, 29, 0.24), transparent 30%),
+    #000000;
+}
+
+body[data-theme="dark"] .app-shell {
+  background:
+    radial-gradient(circle at 14% 8%, rgba(220, 38, 38, 0.28), transparent 28%),
+    radial-gradient(circle at 86% 72%, rgba(127, 29, 29, 0.22), transparent 30%),
+    #000000;
+}
+
+body[data-theme="dark"] .sidebar {
+  background: linear-gradient(180deg, #000000, #160202 58%, #7f1d1d);
+}
+
+body[data-theme="dark"] .content h2,
+body[data-theme="dark"] .section-heading h3,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] label,
+body[data-theme="dark"] .field-group {
+  color: #f8fafc;
+}
+
+body[data-theme="dark"] .eyebrow,
+body[data-theme="dark"] .metric span,
+body[data-theme="dark"] .muted,
+body[data-theme="dark"] .grade-row small,
+body[data-theme="dark"] .chart-legend,
+body[data-theme="dark"] .habit-breakdown,
+body[data-theme="dark"] .habit-score span {
+  color: #cbd5e1;
+}
+
+body[data-theme="dark"] .auth-card,
+body[data-theme="dark"] .panel,
+body[data-theme="dark"] .metric,
+body[data-theme="dark"] .tabs {
+  background: rgba(7, 7, 8, 0.94);
+  border-color: rgba(239, 68, 68, 0.34);
+  color: #f8fafc;
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(239, 68, 68, 0.1);
+}
+
+body[data-theme="dark"] input,
+body[data-theme="dark"] select,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] .segmented-control {
+  background: #0b0b0f;
+  color: #f8fafc;
+  border-color: rgba(239, 68, 68, 0.36);
+}
+
+body[data-theme="dark"] input::placeholder,
+body[data-theme="dark"] textarea::placeholder {
+  color: #94a3b8;
+}
+
+body[data-theme="dark"] .grade-row,
+body[data-theme="dark"] .integral-grid article,
+body[data-theme="dark"] .teacher-subject-metrics span,
+body[data-theme="dark"] .grade-stats span,
+body[data-theme="dark"] .student-row,
+body[data-theme="dark"] .ghost-action,
+body[data-theme="dark"] .icon-button {
+  background: #0b0b0f;
+  border-color: rgba(239, 68, 68, 0.28);
+  color: #f8fafc;
+}
+
+body[data-theme="dark"] .tabs button,
+body[data-theme="dark"] .segmented-control label,
+body[data-theme="dark"] .teacher-subject-metrics b,
+body[data-theme="dark"] .integral-grid strong {
+  color: #f8fafc;
+}
+
+body[data-theme="dark"] .primary-button,
+body[data-theme="dark"] .tabs button.active,
+body[data-theme="dark"] .segmented-control label:has(input:checked) {
+  background: linear-gradient(135deg, #000000, #991b1b, #dc2626);
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(220, 38, 38, 0.34);
+}
+
+body[data-theme="dark"] .grades-header strong,
+body[data-theme="dark"] .habit-score strong,
+body[data-theme="dark"] .grade-row b,
+body[data-theme="dark"] .tabs button:hover {
+  color: #ef4444;
+}
+
+body[data-theme="dark"] .grade-progress span {
+  background: linear-gradient(90deg, #7f1d1d, #ef4444);
+}
+
+body[data-theme="dark"] .habit-score {
+  background: linear-gradient(135deg, rgba(127, 29, 29, 0.22), rgba(220, 38, 38, 0.16));
+}
+
+body[data-theme="dark"] .simulation-note {
+  background: rgba(69, 10, 10, 0.72);
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #fecaca;
+}
+
+body[data-theme="dark"] .student-row.selected {
+  background: rgba(127, 29, 29, 0.28);
+  border-color: #ef4444;
+}
